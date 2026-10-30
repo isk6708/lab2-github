@@ -1,0 +1,21 @@
+name: 'Greet Action Recipe'
+description: 'Greet someone and return the answer'
+inputs:
+  who-to-greet:
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  answer:
+    description: 'The answer to everything (always 42)'
+    value: ${{ steps.main.outputs.answer }}
+runs:
+  using: 'composite'
+  steps:
+    - id: main
+      shell: bash
+      run: |
+        echo "Hello ${{ inputs.who-to-greet }}"
+        echo "answer=42" >> "$GITHUB_OUTPUT"
+        echo "### Hello ${{ inputs.who-to-greet }}! :rocket:" >> "$GITHUB_STEP_SUMMARY"
+        echo "<h3> The answer from Deep Thought is 42 :robot:</h3>" >> "$GITHUB_STEP_SUMMARY"

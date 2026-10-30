@@ -1,0 +1,19 @@
+name: Action CI
+on: [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Run my own composite action
+        id: my-action
+        uses: ./
+        with:
+          who-to-greet: '@wulfland'
+      - name: Output the answer
+        run: echo "The answer is ${{ steps.my-action.outputs.answer }}"
+      - name: Test the action
+        if: ${{ steps.my-action.outputs.answer != 42 }}
+        run: |
+          echo "::error file=action.yml,line=1,title=Error in action::The answer was not expected"
+          exit 1
